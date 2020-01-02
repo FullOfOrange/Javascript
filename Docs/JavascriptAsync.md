@@ -1,6 +1,4 @@
-# Javascript
-
-## 비동기
+# JavascriptAsync
 
 ### - CallBack
 
@@ -120,3 +118,60 @@ setTimeout 3
 아무리 setTimeout이 먼저 실행되도 PromiseChaining에 있던 Task들이 Stack에 먼저 올라가는 것을 알 수 있다.
 
 ### - Async/Await
+
+비동기 코드에서 Promise를 일반 동기로직처럼 사용할 수 있도록 만들어놓은 것으로, Generator 
+
+```javascript
+const getId = cb => {
+  setTimeout(() => cb(1).1 )
+}
+```
+
+##### day 6,8의 delay 비동기 코드화
+
+Async / Await는 Promise를 일반적 코드에 녹여내기 위한 방법이다. try - catch마냥, await는 promise가 리턴되기까지 기다린다. 이 await를 적용이 가능한 함수는 async function이다.
+
+```javascript
+async function A(){
+  await delay();
+  console.log('fin delay.');
+}
+function B(){
+  return new Promise((resolve, reject)=>{
+  	setTimeout(() => resolve(), 2000)
+  })
+}
+```
+
+위와 같은 방식으로 코딩을 할 경우, A 함수가 delay를 기다리게 된다. 만약 A() 함수를 다른 함수에서 사용할 경우엔 throw를 스택으로 호출된 함수들에 리턴하는 것 마냥 A를 await로 기다리면 된다.
+
+##### 일반적인 사용
+
+```javascript
+const A = (data) => new Promise(resolve =>
+    setTimeout(() =>
+        resolve(data.map((cur) => (cur.id)))
+    ,1)
+);
+const B = (data) => new Promise(resolve =>
+    setTimeout(() => 
+        resolve(data.reduce((initVal,cur) => initVal + cur,0))
+    ,1)
+);
+A(data).then(id => {
+    B(id).then(name => {
+        console.log(name);
+    })
+})
+```
+
+위의 코드가 id와 name이 포함된 데이터를 가지고 와서 id를 추출 한 뒤에, 그 아이디를 더하는 코드의 비동기 작동이다. 일단 then으로 할 수 있다.
+
+```javascript
+(async function(){
+    let d = await A(data);
+    console.log(await B(d));
+})();
+```
+
+이런식으로 async를 이용하여 비동기를 풀어낼 수도 있다. 마치 이것은 일반적인 코드를 작성하듯 작성이 가능하여, 비교적 가독성이 좋을 수도 있다.

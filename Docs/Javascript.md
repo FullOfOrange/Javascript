@@ -1,8 +1,9 @@
-# JavaScript
+# JS
 
 ### 기초
 
-* var은, 최초로 사용되는 변수일 경우에는 굳이 안써도 된다. 근데 이게 전역변수로 미리 할당된 변수의 경우에는, 지역에서 var 없이 사용할 경우, 전역 변수의 값을 변경하는 것으로 본다.
+* var은, Functional Scope 로 들어간다. 어디에서 실행되던 자신의 바로 부모의 Scope로 들어감.
+* const 와 let이 Block Scope 로 들어간다. 
 
 #### - 객체
 
@@ -49,7 +50,7 @@ grades.show();
 
 표현 방식이 json 과 비슷하다. 다른 class 의 개념과 마찬가지로 생각해도 될 것 같다. 후에 객체지향 프로그래밍에서 진짜 class 가 나온다.
 
-## 함수지향 프로그래밍
+### Functional Programming
 
 #### - 유효범위(변수)
 
@@ -405,7 +406,7 @@ alert(sum.apply(o2)) // 185
 
 이 예제가 각 객체에 sum 함수를 객체 소속으로 만들어서 사용하는 것이다. (각 함수의 인자는 또 따로 동작한다. 인자는 apply 사용시에 o1,123 이런식으로 사용한다.)
 
-## 객체지향 프로그래밍
+### OOP
 
 javascript에선 function이 곧 객체이다. new로 '정의된 함수'를 객체를 할당하듯 생성하면 그것이 곧 객체인 것이다. function에는 인자도 들어갈 수 있으며, 그 인자는 this를 통해 관리된다. 직관적이되 관리가 어렵다. 
 
@@ -452,15 +453,13 @@ this는 호출 하는 대상에 따라서 달라지는, 함수 호출 context(�
 
 #### - Prototype
 
-http://www.nextree.co.kr/p7323/
-
 상속의 수단으로 사용되는 prototype은, 객체의 원형이라고 할 수 있다. 객체는 property를 가질 수 있는데, prototype이란 property는 그 용도가 정해져 있는 특수한 property이다. prototype에 저장된 속성들은 생성자를 통해서 타 객체가 만들어 질때 그 객체에 연결된다.
 
-쉽게 설명하면, class라는 개념이 없기에(원래의 틀이 따로 없다), 기존의 객체를 복사하여 새로운 객체를 형성해야만 하고, 클래스 대신에 존재하는 원형이 바로 prototype이다. 자바스크립트는 이 prototype을 복사해서 사용한다. 먼저 함수와 객체의 내부 구조에 대해서 알아보자.
+쉽게 설명하면, class라는 개념이 없기에(원래의 틀이 따로 없다), 기존의 객체를 복사하여 새로운 객체를 형성해야만 하고, 클래스  대신에 존재하는 원형이 바로 prototype이다. 자바스크립트는 이 prototype을 복사해서 사용한다. 먼저 함수와 객체의 내부 구조에 대해서 알아보자.
 
-![hjkwon-140324-prototype-11](http://www.nextree.co.kr/content/images/2016/09/hjkwon-140324-prototype-11.png)
+![](../Imgs/js_prototype.png)
 
-위와 같이, Person 함수를 만들면 prototype이라는 멤버를 가지게 되고, 이 속성은 다른 곳에 있는 함수 이름의 prototype 객체를 참조한다. 그리고 이 객체의 멤버인 constructor 속성은 원형의 함수를 참조하는 내부 구조를 가진다.![hjkwon-140324-prototype-03](http://www.nextree.co.kr/content/images/2016/09/hjkwon-140324-prototype-03.png)
+*(사진이 변경되었다. 다시 내용 수정 요망)* 위와 같이, Person 함수를 만들면 prototype이라는 멤버를 가지게 되고, 이 속성은 다른 곳에 있는 함수 이름의 prototype 객체를 참조한다. 그리고 이 객체의 멤버인 constructor 속성은 원형의 함수를 참조하는 내부 구조를 가진다.
 
 ``` javascript
 function Person(){}
@@ -526,7 +525,7 @@ console.log('o.toString()',o.toString());
 
 여기에서 Object는 
 
-## ES6 추가된 것
+### ES6
 
 #### let, const
 
@@ -558,72 +557,9 @@ for(var a in x) 와 for(var a of x) 를 구분하자. in은 value 이름을 가�
 
 var은 function-scoped, let, const는 block-scoped이다.
 
+### JS 문법 정리
 
-
-# JS 문법 정리
-
-이곳에서 다루는 것은, 비동기적인 처리가 필요할 경우, 수행하는 것들에 대해 서술한 내용이 많다. 잘 참고해보자.
-
-```javascript
-const getId = cb => {
-  setTimeout(() => cb(1).1 )
-}
-```
-
-## Promise / async, await
-
-##### day 6,8의 delay 비동기 코드화.
-
-Async / Await는 Promise를 일반적 코드에 녹여내기 위한 방법이다. try - catch마냥, await는 promise가 리턴되기까지 기다린다. 이 await를 적용이 가능한 함수는 async function이다.
-
-```javascript
-async function A(){
-  await delay();
-  console.log('fin delay.');
-}
-function B(){
-  return new Promise((resolve, reject)=>{
-  	setTimeout(() => resolve(), 2000)
-  })
-}
-```
-
-위와 같은 방식으로 코딩을 할 경우, A 함수가 delay를 기다리게 된다. 만약 A() 함수를 다른 함수에서 사용할 경우엔 throw를 스택으로 호출된 함수들에 리턴하는 것 마냥 A를 await로 기다리면 된다.
-
-------
-
-##### 일반적인 사용.
-
-```javascript
-const A = (data) => new Promise(resolve =>
-    setTimeout(() =>
-        resolve(data.map((cur) => (cur.id)))
-    ,1)
-);
-const B = (data) => new Promise(resolve =>
-    setTimeout(() => 
-        resolve(data.reduce((initVal,cur) => initVal + cur,0))
-    ,1)
-);
-A(data).then(id => {
-    B(id).then(name => {
-        console.log(name);
-    })
-})
-```
-
-위의 코드가 id와 name이 포함된 데이터를 가지고 와서 id를 추출 한 뒤에, 그 아이디를 더하는 코드의 비동기 작동이다. 일단 then으로 할 수 있다.
-
-```javascript
-(async function(){
-    let d = await A(data);
-    console.log(await B(d));
-})();
-```
-
-이런식으로 async를 이용하여 비동기를 풀어낼 수도 있다. 마치 이것은 일반적인 코드를 작성하듯 작성이 가능하여, 비교적 가독성이 좋을 수도 있다.
-
-## function* / yield
+### - function* / yield
 
 http://jeonghwan-kim.github.io/2016/12/15/coroutine.html
 
@@ -659,7 +595,7 @@ console.log(gen)
 
 위의 수동으로 풀어준 과정을 외부의 모듈을 이용하여 구현할 수도 있다. 이것을 코루틴이라고 말한다.
 
-**tj/co**
+###- tj/co
 
 ```js
 const co = require('co')
@@ -671,7 +607,7 @@ co(function* gen () {
 }).then(user => console.log(user));
 ```
 
-**bluebird.coroutine**
+##### bluebird.coroutine
 
 ```js
 const Promise = require('bluebird')
@@ -683,13 +619,7 @@ Promise.coroutine(function* gen () {
 })().then(user => console.log(user));
 ```
 
-그렇지만 한번, 직접 구현해보자
-
-```javascript
-
-```
-
-## mutable, immutable
+### - mutable, immutable
 
 https://poiemaweb.com/js-immutability
 
@@ -699,39 +629,33 @@ https://poiemaweb.com/js-immutability
 
 사실 명확한 이해는 안되지만, 기존의 주소에 있는 데이터가 변경된다면, 이것은 가변성이고, 기존의 주소가 가르키는 원본 데이터를 가르키는 것이 사라지고 새로운 데이터가 만들어진다면, 이것은 새로운 데이터이다.
 
-## exports & require
+### - exports & require
 
 - exports 는 전역객체이다.간단하게 말하면 그냥 exports라는 전역객체에 특정 속성, 변수, 메소드를 넣어버리는 것이다. 따라서 파일 내에서 exports를 많이 사용해서 여러가지 속성이나 메소드를 넣어버릴 수도 있다. (객체 여러개를 동시에 리턴한다고 봐도 된다.) 
+
 - module.exports는 객체 하나에 여러가지 속성을 넣어서 리턴하는 것이다. {}안에 각종 메소드와 변수를 객체 형태로 넣은 뒤 이것들을 사용하면 된다. module export와 exports는 동일한 객체를 리턴한다. 이 둘은 사실은 동일한 것이며, module.exports가 exports 를 바라보고 있는 형태이다. (레퍼런스가 동일하다고 보면 된다.) 따라서 이 둘은 exports에 객체를 만들어서 보내버리는 것이다. 
+
 - require은 이 exports에 넣어놓은 객체를 변수에 할당하는 것이다. 마치 객체를 정의하여 변수에 할당하듯 정의를 하면 된다. (실제로 exports에 객체형태로 저장해놓은 것을 꺼내와서 변수에 할당하는 과정이다.) require에는 경로를 지정할 수 있다. 그러나 경로에 .js와 directory 명이 동일하지만, 파일명을 명시하지 않았다면, .js를 우선적으로 찾는다. directory 전체를  require로 포함시킬 수도 있다. 그러나 이것은 module 정책에 따라 특정 정의된 것만 include된다. (기본으로 디렉토리를 require 할때 가져오는 것은 directory 내부의 index.js이다.)
+
 - require는 넘어온 객체 내의 일부 객체만 받아서 쓸  수도 있다. require('lodash/every') 이런식으로 사용할 수도 있다.
+
 - import 는 typeScript 에서 많이 사용되는 것이다.. 이건 babel? 로 설정을 해서 사용할 수도 있다. 바벨은, 특정 코드의 컨벤션과 규약을 아래 버전으로 내려주는 것이다.
 
-## 소프트웨어 공학
+- module.exports 와 exports는 결국 최종적으로는 module.exports가 리턴된다. exports가 module.exports를 바라보는 형태이다(call by reference로 동일한 객체를 호출하는 느낌) 
 
-선구자들이 해결한 문제를 공식화 하여 여러 프로그래머가 사용할 수 있도록 한 규칙, 디자인 패턴을 통한 소프트웨어의 설계, 생산 방법임.
+  ```javascript
+  var express = require('express');
+  var router = express.Router();
+  
+  /* GET home page. */
+  router.get('/', function(req, res) {
+    res.render('index', { title: 'Express' });
+  });
+  
+  module.exports = router;
+  ```
 
-#### OOP
-
-객체지향 프로그래밍이다. 지켜야할 규칙만 간단히 명시해보자.
-
-#### Functional Programming
-
-데이터의 흐름을 중시하는 프로그래밍 기법이다.
-
-#### Observer Pattern
-
-나중에 기억 안날때를 대비하여… 안드로이드 프로그래밍을 할때, 이벤트를 발생시켜서 다른 엑티비티와 통신하는 방법이 이거였다..
-
-http://blog.naver.com/PostView.nhn?blogId=c_ist82&logNo=220795909036&parentCategoryNo=&categoryNo=9&viewDate=&isShowPopularPosts=false&from=postView
-
-여기 정말 잘 나와있다. 참고하자.
-
-#### MVC
-
-https://opentutorials.org/course/697/3828
-
-**Model - View - Controller** 의 형태로 이뤄진 모델. 컨트롤러에 의해 사용자와 소통하고, View를 통해 UI등의 그래픽을 수정하며, Model 을 통해 상호 소통한다. 이들을 분리해놓고 사용하는 방식.  이 패턴은 여러 파일에 나누어 적용한 뒤에, 객체들을 통해 소통할 수 있으며, 상호간의 연결성을 최소화 하기 위해서, Observer 패턴을 적용할 수도 있다.
+  따라서 이를 express.Router(); 가 리턴한 객체를 모듈로 리턴한 것이다. 
 
 ## 그 외
 
@@ -743,9 +667,33 @@ https://opentutorials.org/course/697/3828
 
 (*은 wild 카드이다.) 검색할 때 이런 키워드를 사용하면 좋은 예시가 많이 나온다.
 
+#### - Underscore (_) 변수는, 최근에 지칭했었던 '결과값' 을 가짐.
+
+```javascript
+var x = 10;
+var y = 5;
+x + y;
+var sum = _
+console.log(sum)
+15
+```
+
+위와 같이, sum 을 출력하면 15가 출력된다.
+
 #### - 왜??
 
 왜 에 대해 탐구하자. 어떤것이 왜 생겼나 찾아보면 사용처를 알수 있다.
 
+#### - Observer Pattern
 
+나중에 기억 안날때를 대비하여… 안드로이드 프로그래밍을 할때, 이벤트를 발생시켜서 다른 엑티비티와 통신하는 방법이 이거였다..
 
+http://blog.naver.com/PostView.nhn?blogId=c_ist82&logNo=220795909036&parentCategoryNo=&categoryNo=9&viewDate=&isShowPopularPosts=false&from=postView
+
+여기 정말 잘 나와있다. 참고하자.
+
+#### - MVC
+
+https://opentutorials.org/course/697/3828
+
+**Model - View - Controller** 의 형태로 이뤄진 모델. 컨트롤러에 의해 사용자와 소통하고, View를 통해 UI등의 그래픽을 수정하며, Model 을 통해 상호 소통한다. 이들을 분리해놓고 사용하는 방식.  이 패턴은 여러 파일에 나누어 적용한 뒤에, 객체들을 통해 소통할 수 있으며, 상호간의 연결성을 최소화 하기 위해서, Observer 패턴을 적용할 수도 있다.
